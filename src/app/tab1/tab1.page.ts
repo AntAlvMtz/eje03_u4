@@ -1,5 +1,5 @@
 import { TaskService } from './../services/task.service';
-import { Component, Input } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-tab1',
@@ -7,6 +7,8 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
+
+  @ViewChild('input') myInput;
 
   public tasks:string[];
   public task:string;
@@ -20,11 +22,8 @@ export class Tab1Page {
     this.taskService.addTask(this.task);
     this.tasks=this.taskService.getTasks();
     console.log(this.tasks);
+    this.myInput.setFocus();
     this.task="";
-    
-    //this.input.setFocus();
-    //captrar el evento del enter 
-    //poner el foco del input cuando se agregue una tarea
   }
 
   public clickOnItem(){

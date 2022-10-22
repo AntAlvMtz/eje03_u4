@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class TaskService {
 
   private tasks: string[] = [];
+  private tasksCompletes: string[] = [];
 
   constructor() { 
       this.tasks.push("Tarea : Recojer y sacar la basura");
@@ -22,6 +23,10 @@ export class TaskService {
 
   public removeTask(pos:number){
     this.tasks.splice(pos,1); //borra el elemento desde la posicion y el 2do parametro cuantos a partir de ahi.
+  }
+
+  public addTaskComplete(taskComplete:string){
+    this.tasksCompletes.push(taskComplete);
   }
 
 }
