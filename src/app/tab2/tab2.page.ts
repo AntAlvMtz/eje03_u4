@@ -15,6 +15,14 @@ export class Tab2Page {
     this.tasksCompletes = this.taskService.getTasksCompletes();
   }
 
+  public addTaskDescomplete(pos:number){
+    this.taskService.addTaskDescomplete(pos);
+    this.tasksCompletes=this.taskService.getTasksCompletes();
+  }
 
+  public removeTaskComplete(pos:number){
+    this.taskService.removeTaskComplete(pos);
+    this.tasksCompletes=this.taskService.getTasksCompletes();
+  }
 
 }

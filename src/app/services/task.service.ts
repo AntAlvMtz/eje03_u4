@@ -25,8 +25,17 @@ export class TaskService {
     return this.tasks[pos];
   }
 
+  public getTaskComplete(pos:number):any{
+    return this.tasksCompletes[pos];
+  }
+
   public addTask(task:string){
     this.tasks.push(task);
+  }
+
+  public addTaskDescomplete(pos:number){
+    this.tasks.push(this.getTaskComplete(pos));
+    this.removeTaskComplete(pos);
   }
 
   public removeTask(pos:number){
@@ -36,6 +45,10 @@ export class TaskService {
   public addTaskComplete(pos:number){
     this.tasksCompletes.push(this.getTask(pos));
     this.removeTask(pos);
+  }
+
+  public removeTaskComplete(pos:number){
+    this.tasksCompletes.splice(pos,1); //borra el elemento desde la posicion y el 2do parametro cuantos a partir de ahi.
   }
 
 }
