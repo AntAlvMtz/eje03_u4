@@ -1,3 +1,4 @@
+import { TaskService } from './../services/task.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,6 +8,13 @@ import { Component } from '@angular/core';
 })
 export class Tab2Page {
 
-  constructor() {}
+  public tasksCompletes:string[];
+  public taskComplete:string;
+
+  constructor(private taskService:TaskService) {
+    this.tasksCompletes = this.taskService.getTasksCompletes();
+  }
+
+
 
 }

@@ -37,4 +37,10 @@ export class Tab1Page {
     this.tasks=this.taskService.getTasks();
   }
 
+  public addTaskComplete(pos:number){
+    this.taskService.addTaskComplete(pos);
+    this.tasks=this.taskService.getTasks();
+    console.log(this.tasks);
+  }
+
 }
