@@ -1,5 +1,7 @@
 import { TaskService } from './../services/task.service';
+import { Tasks } from './../models/tasks';
 import { Component, ViewChild } from '@angular/core';
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: 'app-tab1',
@@ -10,36 +12,67 @@ export class Tab1Page {
 
   @ViewChild('input') myInput;
 
-  public tasks:string[];
-  public task:string;
+  public tasks:Tasks[];
+  public task: Tasks;
+  public value:string;
 
-  constructor(private taskService:TaskService) {
-    this.tasks = this.taskService.getTasks();
-    this.task = "Tarea : ";
+  constructor(private taskService:TaskService, private alertController:AlertController) {
+    //this.tasks = this.taskService.getTasks();
+    //this.task = "Tarea : ";
+    this.taskService.getTasksDescompletes().subscribe(res =>{
+      this.tasks = res;
+      console.log(this.tasks);
+    })
   }
 
   public addTask(){
+    this.task = {
+      task: this.value,
+      complete: false,
+    }
     this.taskService.addTask(this.task);
-    this.tasks=this.taskService.getTasks();
     console.log(this.tasks);
     this.myInput.setFocus();
-    this.task="";
+    this.value="";
   }
 
-  public clickOnItem(){
-    this.task="Tarea: ";
+ public clickOnItem(){
+    this.value="Tarea: ";
     
   }
 
 
-  public removeTask(pos:number){
-    this.taskService.removeTask(pos);
-    this.tasks=this.taskService.getTasks();
+  public async removeTask(id: string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmación',
+      subHeader: '¿Estás seguro que deseas eliminar?',
+      message: 'Esto es una confirmación',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+
+          }
+        },
+        {
+          text: 'Aceptar',
+          role: 'confirm',
+          handler: () => {
+            this.taskService.removeTask(id);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+
+
+
   }
 
-  public addTaskComplete(pos:number){
-    this.taskService.addTaskComplete(pos);
-    this.tasks=this.taskService.getTasks();
+  public addTaskComplete(id:string){
+    this.taskService.updateTask(id,true);
   }
 
 }

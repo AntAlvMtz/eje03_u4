@@ -1,5 +1,7 @@
 import { TaskService } from './../services/task.service';
 import { Component } from '@angular/core';
+import { Tasks } from '../models/tasks';
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: 'app-tab2',
@@ -8,21 +10,48 @@ import { Component } from '@angular/core';
 })
 export class Tab2Page {
 
-  public tasksCompletes:string[];
-  public taskComplete:string;
+  public tasksCompletes:Tasks[];
+  public taskComplete:Tasks;
 
-  constructor(private taskService:TaskService) {
-    this.tasksCompletes = this.taskService.getTasksCompletes();
+  constructor(private taskService:TaskService,private alertController:AlertController) {
+    //this.tasksCompletes = this.taskService.getTasksCompletes();
+    this.taskService.getTasksCompletes().subscribe(res =>{
+      this.tasksCompletes = res;
+      console.log(this.tasksCompletes);
+    })
   }
 
-  public addTaskDescomplete(pos:number){
-    this.taskService.addTaskDescomplete(pos);
-    this.tasksCompletes=this.taskService.getTasksCompletes();
+  public addTaskDescomplete(id:string){
+    this.taskService.updateTask(id,false);
   }
 
-  public removeTaskComplete(pos:number){
-    this.taskService.removeTaskComplete(pos);
-    this.tasksCompletes=this.taskService.getTasksCompletes();
+  public async removeTaskComplete(id: string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmación',
+      subHeader: '¿Estás seguro que deseas eliminar?',
+      message: 'Esto es una confirmación',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+
+          }
+        },
+        {
+          text: 'Aceptar',
+          role: 'confirm',
+          handler: () => {
+            this.taskService.removeTask(id);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+
+
+
   }
 
 }
